@@ -108,6 +108,31 @@ class BreakClause(BaseModel):
     span: Span | None = None
 
 
+class ConditionProposal(BaseModel):
+    """What the LLM proposes for one condition, BEFORE the deterministic core checks it.
+
+    The core grounds every `evidence_quote`, recomputes notice timing from the
+    extracted dates, and applies the vacant-possession legal test to the flags. The
+    model's `status` only survives for the semantic conditions, and only when its
+    evidence grounds.
+    """
+
+    condition: ConditionId
+    status: Status
+    evidence_quotes: list[str] = Field(default_factory=list)
+    rationale: str = ""
+
+    # notice_timing only — the core recomputes timing from these, deterministically.
+    break_date: str | None = None
+    notice_service_date: str | None = None
+    notice_period_months: int | None = None
+
+    # vacant_possession only — the legal test (people / chattels / occupiers left).
+    vp_people_left: bool | None = None
+    vp_chattels_substantial: bool | None = None
+    vp_occupier_left: bool | None = None
+
+
 class Assessment(BaseModel):
     """Output of assess_validity: the orchestrated, calibrated assessment."""
 
