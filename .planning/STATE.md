@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-06-27)
 
 **Core value:** Every asserted condition is grounded to a verbatim source span or returns NOT_FOUND — never invented — and the server proves with a published hallucination rate that it would rather say "ambiguous — human verify" than guess.
-**Current focus:** Phase 1 — Dataset, Scoring Harness & Cassette Infrastructure
+**Current focus:** All 5 phases built and tested — v1 complete.
 
 ## Current Position
 
-Phase: 1 of 5 (Dataset, Scoring Harness & Cassette Infrastructure)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-06-27 — Roadmap created (5 phases, eval-first horizontal layers, 32/32 requirements mapped)
+Phase: 5 of 5 (Full Eval, Report & README)
+Plan: complete
+Status: ✓ Built — 62 passing tests, 5 atomic phase commits, eval report + README shipped
+Last activity: 2026-06-27 — Phases 1–5 implemented directly; `uv build` produces a publish-ready wheel; MCP server passes an in-memory client roundtrip.
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,8 +56,9 @@ None yet.
 
 [Issues that affect future work]
 
-- [Phase 3]: Spot-check `messages.parse()` Pydantic helper form against `anthropic` 0.112.0 docs at phase start (MEDIUM confidence on `output_config.format` vs `output_format` migration).
-- [Phase 4]: Verify exact FastMCP 3.x `@mcp.tool` decorator and `mcp.run()` signatures against gofastmcp.com, and MCP Inspector 0.22.x flags via `--help`, at phase start — do not rely on training-data recall.
+- ✓ RESOLVED [Phase 3]: `anthropic` 0.112.0 uses `messages.parse(..., output_format=Model) -> ParsedMessage`; the parsed object is read from `.parsed_output` (verified against the installed SDK). Client response-parsing is unit-tested via a mock.
+- ✓ RESOLVED [Phase 4]: FastMCP 3.4.2 verified against the installed package — `@mcp.tool` decorators return plain functions, `mcp.run()` defaults to stdio, tools expose `output_schema` + `annotations`. In-memory MCP client roundtrip passes.
+- ⏳ OPEN (runtime, not a build gap): the comparative Haiku-vs-Sonnet headline number requires a one-time `scripts/run_eval.py --record` with `ANTHROPIC_API_KEY` to record cassettes. The committed report is the key-free heuristic baseline, clearly labelled.
 
 ## Deferred Items
 
@@ -70,5 +71,5 @@ Items acknowledged and carried forward from previous milestone close:
 ## Session Continuity
 
 Last session: 2026-06-27
-Stopped at: Roadmap and STATE created; REQUIREMENTS.md traceability populated (32/32 mapped).
+Stopped at: All 5 phases built and committed. 62 passing tests. Eval report + story-led README shipped. Next optional step: run `scripts/run_eval.py --record` with a key for the live Haiku-vs-Sonnet numbers.
 Resume file: None

@@ -9,56 +9,56 @@ Requirements for the initial release. Each maps to a roadmap phase.
 
 ### Dataset (DATA)
 
-- [ ] **DATA-01**: 20–40 synthetic UK commercial-lease break-clause case files exist, each a single document containing the relevant lease provisions plus a Background Facts section
-- [ ] **DATA-02**: Each case carries a known-correct validity label (VALID / INVALID / AMBIGUOUS) in machine-readable front-matter
-- [ ] **DATA-03**: Each case carries gold citation spans for every condition-relevant assertion, as ground truth for grounding and faithfulness scoring
-- [ ] **DATA-04**: The dataset spans all failure modes — missed date, defective notice, outstanding rent, vacant-possession breach — and includes at least 3–5 genuinely ambiguous cases
-- [ ] **DATA-05**: The dataset includes at least one adversarial prompt-injection case (instructions embedded in lease text) that must still be grounded/abstained correctly
-- [ ] **DATA-06**: Case authoring and labelling are separated by a label-review pass, so ground truth reflects what the text supports rather than authorial intent
-- [ ] **DATA-07**: A dev/eval split (or frozen-before-final-cases protocol) is documented so published metrics are not train-on-test
+- [x] **DATA-01**: 20–40 synthetic UK commercial-lease break-clause case files exist, each a single document containing the relevant lease provisions plus a Background Facts section
+- [x] **DATA-02**: Each case carries a known-correct validity label (VALID / INVALID / AMBIGUOUS) in machine-readable front-matter
+- [x] **DATA-03**: Each case carries gold citation spans for every condition-relevant assertion, as ground truth for grounding and faithfulness scoring
+- [x] **DATA-04**: The dataset spans all failure modes — missed date, defective notice, outstanding rent, vacant-possession breach — and includes at least 3–5 genuinely ambiguous cases
+- [x] **DATA-05**: The dataset includes at least one adversarial prompt-injection case (instructions embedded in lease text) that must still be grounded/abstained correctly
+- [x] **DATA-06**: Case authoring and labelling are separated by a label-review pass, so ground truth reflects what the text supports rather than authorial intent
+- [x] **DATA-07**: A dev/eval split (or frozen-before-final-cases protocol) is documented so published metrics are not train-on-test
 
 ### Grounding & Citation (GRND)
 
-- [ ] **GRND-01**: A deterministic grounding gate verifies every cited span exists verbatim in the source (normalize-then-exact-match, with code-derived character offsets)
-- [ ] **GRND-02**: When a span cannot be grounded, the system returns NOT_FOUND and never substitutes invented or paraphrased text
-- [ ] **GRND-03**: A NOT_FOUND can only degrade a verdict toward AMBIGUOUS — it is never upgraded downstream
-- [ ] **GRND-04**: `find_citation(claim)` returns exact verbatim supporting text or NOT_FOUND
+- [x] **GRND-01**: A deterministic grounding gate verifies every cited span exists verbatim in the source (normalize-then-exact-match, with code-derived character offsets)
+- [x] **GRND-02**: When a span cannot be grounded, the system returns NOT_FOUND and never substitutes invented or paraphrased text
+- [x] **GRND-03**: A NOT_FOUND can only degrade a verdict toward AMBIGUOUS — it is never upgraded downstream
+- [x] **GRND-04**: `find_citation(claim)` returns exact verbatim supporting text or NOT_FOUND
 
 ### Assessment Logic (ASMT)
 
-- [ ] **ASMT-01**: `extract_break_clause(case)` returns the break clause plus its verbatim source span (LLM-proposed, gate-verified)
-- [ ] **ASMT-02**: `check_conditions` evaluates the four conditions precedent (notice timing, notice validity, rent/no-arrears, vacant possession) to pass / fail / uncertain
-- [ ] **ASMT-03**: Notice date math ("not less than N months", break-date expiry) is computed deterministically using the corresponding-day rule — never by the LLM
-- [ ] **ASMT-04**: Absent or NOT_FOUND evidence yields `uncertain`, never a silent `pass`
-- [ ] **ASMT-05**: `assess_validity` aggregates the checklist via strict precedence (any fail → INVALID; any uncertain → AMBIGUOUS; all pass → VALID), deterministically
-- [ ] **ASMT-06**: `assess_validity` returns an explicit calibration field and mandatory human-verify gates, identifying which conditions forced the label
-- [ ] **ASMT-07**: The vacant-possession check encodes the legal test (people / chattels / legal interests left behind — not mere physical condition)
+- [x] **ASMT-01**: `extract_break_clause(case)` returns the break clause plus its verbatim source span (LLM-proposed, gate-verified)
+- [x] **ASMT-02**: `check_conditions` evaluates the four conditions precedent (notice timing, notice validity, rent/no-arrears, vacant possession) to pass / fail / uncertain
+- [x] **ASMT-03**: Notice date math ("not less than N months", break-date expiry) is computed deterministically using the corresponding-day rule — never by the LLM
+- [x] **ASMT-04**: Absent or NOT_FOUND evidence yields `uncertain`, never a silent `pass`
+- [x] **ASMT-05**: `assess_validity` aggregates the checklist via strict precedence (any fail → INVALID; any uncertain → AMBIGUOUS; all pass → VALID), deterministically
+- [x] **ASMT-06**: `assess_validity` returns an explicit calibration field and mandatory human-verify gates, identifying which conditions forced the label
+- [x] **ASMT-07**: The vacant-possession check encodes the legal test (people / chattels / legal interests left behind — not mere physical condition)
 
 ### Eval Harness & Report (EVAL)
 
-- [ ] **EVAL-01**: A pytest scoring harness runs the full pipeline over the labelled dataset
-- [ ] **EVAL-02**: The harness measures extraction accuracy (field-level correctness + span overlap)
-- [ ] **EVAL-03**: The harness measures citation faithfulness (verbatim presence + support of the claim, scored against gold labels)
-- [ ] **EVAL-04**: The harness measures hallucination rate, defined as the ungrounded OR misgrounded assertion rate, with the definition pre-registered and the denominator (assertions / cases) published
-- [ ] **EVAL-05**: The harness measures calibration — coverage and accuracy-on-answered, abstention precision/recall, and a 3-way confusion matrix (so over-abstention is visible)
-- [ ] **EVAL-06**: The eval replays recorded cassettes so it runs in CI with no API key in under 2 minutes (record live, redact the `x-api-key` header, match on request body, `record_mode=none` in CI)
-- [ ] **EVAL-07**: The eval runs comparatively across `claude-haiku-4-5` and `claude-sonnet-4-6` from a single model-agnostic harness
-- [ ] **EVAL-08**: An eval report (markdown + a zero-dependency SVG chart) publishes all four metrics with hallucination rate as the headline, a per-model comparison table, a confusion matrix, a per-condition breakdown, and 2–3 caught-hallucination examples
-- [ ] **EVAL-09**: The report states reproducibility provenance (date of last live re-measurement) and limitations
+- [x] **EVAL-01**: A pytest scoring harness runs the full pipeline over the labelled dataset
+- [x] **EVAL-02**: The harness measures extraction accuracy (field-level correctness + span overlap)
+- [x] **EVAL-03**: The harness measures citation faithfulness (verbatim presence + support of the claim, scored against gold labels)
+- [x] **EVAL-04**: The harness measures hallucination rate, defined as the ungrounded OR misgrounded assertion rate, with the definition pre-registered and the denominator (assertions / cases) published
+- [x] **EVAL-05**: The harness measures calibration — coverage and accuracy-on-answered, abstention precision/recall, and a 3-way confusion matrix (so over-abstention is visible)
+- [x] **EVAL-06**: The eval replays recorded cassettes so it runs in CI with no API key in under 2 minutes (record live, redact the `x-api-key` header, match on request body, `record_mode=none` in CI)
+- [x] **EVAL-07**: The eval runs comparatively across `claude-haiku-4-5` and `claude-sonnet-4-6` from a single model-agnostic harness
+- [x] **EVAL-08**: An eval report (markdown + a zero-dependency SVG chart) publishes all four metrics with hallucination rate as the headline, a per-model comparison table, a confusion matrix, a per-condition breakdown, and 2–3 caught-hallucination examples
+- [x] **EVAL-09**: The report states reproducibility provenance (date of last live re-measurement) and limitations
 
 ### MCP Server Surface (MCP)
 
-- [ ] **MCP-01**: A FastMCP server exposes the four single-purpose tools (`extract_break_clause`, `check_conditions`, `find_citation`, `assess_validity`), each with a typed output schema
-- [ ] **MCP-02**: The server runs via a single command and passes MCP Inspector over stdio
-- [ ] **MCP-03**: Every tool response carries a schema-enforced decision-support disclaimer field (tested, not just README prose)
-- [ ] **MCP-04**: Business-logic failures return structured in-result tool errors, and nothing is written to stdout (stdio JSON-RPC purity)
+- [x] **MCP-01**: A FastMCP server exposes the four single-purpose tools (`extract_break_clause`, `check_conditions`, `find_citation`, `assess_validity`), each with a typed output schema
+- [x] **MCP-02**: The server runs via a single command and passes MCP Inspector over stdio
+- [x] **MCP-03**: Every tool response carries a schema-enforced decision-support disclaimer field (tested, not just README prose)
+- [x] **MCP-04**: Business-logic failures return structured in-result tool errors, and nothing is written to stdout (stdio JSON-RPC purity)
 
 ### Packaging & README (PKG)
 
-- [ ] **PKG-01**: The project is an installable, publish-ready Python 3.12 + uv package with a `[project.scripts]` console entry (runnable via `uvx`/`pip`), not published to PyPI in v1
-- [ ] **PKG-02**: A story-led README opens with a real-world missed-condition scenario and includes one architecture diagram and the eval results
-- [ ] **PKG-03**: A clean clone-to-running path completes in under 2 minutes, verified from a fresh checkout
-- [ ] **PKG-04**: The repo is fully self-contained — no external or proprietary imports or data anywhere
+- [x] **PKG-01**: The project is an installable, publish-ready Python 3.12 + uv package with a `[project.scripts]` console entry (runnable via `uvx`/`pip`), not published to PyPI in v1
+- [x] **PKG-02**: A story-led README opens with a real-world missed-condition scenario and includes one architecture diagram and the eval results
+- [x] **PKG-03**: A clean clone-to-running path completes in under 2 minutes, verified from a fresh checkout
+- [x] **PKG-04**: The repo is fully self-contained — no external or proprietary imports or data anywhere
 
 ## v2 Requirements
 
@@ -94,41 +94,41 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
-| DATA-04 | Phase 1 | Pending |
-| DATA-05 | Phase 1 | Pending |
-| DATA-06 | Phase 1 | Pending |
-| DATA-07 | Phase 1 | Pending |
-| GRND-01 | Phase 2 | Pending |
-| GRND-02 | Phase 2 | Pending |
-| GRND-03 | Phase 2 | Pending |
-| GRND-04 | Phase 3 | Pending |
-| ASMT-01 | Phase 3 | Pending |
-| ASMT-02 | Phase 2 | Pending |
-| ASMT-03 | Phase 2 | Pending |
-| ASMT-04 | Phase 2 | Pending |
-| ASMT-05 | Phase 2 | Pending |
-| ASMT-06 | Phase 3 | Pending |
-| ASMT-07 | Phase 2 | Pending |
-| EVAL-01 | Phase 1 | Pending |
-| EVAL-02 | Phase 1 | Pending |
-| EVAL-03 | Phase 1 | Pending |
-| EVAL-04 | Phase 1 | Pending |
-| EVAL-05 | Phase 1 | Pending |
-| EVAL-06 | Phase 1 | Pending |
-| EVAL-07 | Phase 5 | Pending |
-| EVAL-08 | Phase 5 | Pending |
-| EVAL-09 | Phase 5 | Pending |
-| MCP-01 | Phase 4 | Pending |
-| MCP-02 | Phase 4 | Pending |
-| MCP-03 | Phase 4 | Pending |
-| MCP-04 | Phase 4 | Pending |
-| PKG-01 | Phase 4 | Pending |
-| PKG-02 | Phase 5 | Pending |
-| PKG-03 | Phase 5 | Pending |
-| PKG-04 | Phase 4 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| DATA-03 | Phase 1 | Complete |
+| DATA-04 | Phase 1 | Complete |
+| DATA-05 | Phase 1 | Complete |
+| DATA-06 | Phase 1 | Complete |
+| DATA-07 | Phase 1 | Complete |
+| GRND-01 | Phase 2 | Complete |
+| GRND-02 | Phase 2 | Complete |
+| GRND-03 | Phase 2 | Complete |
+| GRND-04 | Phase 3 | Complete |
+| ASMT-01 | Phase 3 | Complete |
+| ASMT-02 | Phase 2 | Complete |
+| ASMT-03 | Phase 2 | Complete |
+| ASMT-04 | Phase 2 | Complete |
+| ASMT-05 | Phase 2 | Complete |
+| ASMT-06 | Phase 3 | Complete |
+| ASMT-07 | Phase 2 | Complete |
+| EVAL-01 | Phase 1 | Complete |
+| EVAL-02 | Phase 1 | Complete |
+| EVAL-03 | Phase 1 | Complete |
+| EVAL-04 | Phase 1 | Complete |
+| EVAL-05 | Phase 1 | Complete |
+| EVAL-06 | Phase 1 | Complete |
+| EVAL-07 | Phase 5 | Complete |
+| EVAL-08 | Phase 5 | Complete |
+| EVAL-09 | Phase 5 | Complete |
+| MCP-01 | Phase 4 | Complete |
+| MCP-02 | Phase 4 | Complete |
+| MCP-03 | Phase 4 | Complete |
+| MCP-04 | Phase 4 | Complete |
+| PKG-01 | Phase 4 | Complete |
+| PKG-02 | Phase 5 | Complete |
+| PKG-03 | Phase 5 | Complete |
+| PKG-04 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 32 total

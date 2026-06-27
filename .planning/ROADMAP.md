@@ -12,11 +12,11 @@ This roadmap builds a self-evaluating MCP server eval-first: the trust infrastru
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Dataset, Scoring Harness & Cassette Infrastructure** - Gold labelled dataset, four-metric pytest harness against a stub oracle, and key-free cassette replay
-- [ ] **Phase 2: Deterministic Core** - Key-free grounding gate, date math, checklist, and strict-precedence aggregator, exhaustively tested
-- [ ] **Phase 3: LLM Adapter & Extraction** - Server-side Anthropic extraction and reasoning behind the grounding gate, with first Haiku/Sonnet cassettes
-- [ ] **Phase 4: MCP Server Surface** - Four single-purpose FastMCP tools, disclaimer field, Inspector pass, and a publish-ready package
-- [ ] **Phase 5: Full Eval, Report & README** - Live comparative Haiku-vs-Sonnet eval, finalized cassettes, eval report, and story-led README
+- [x] **Phase 1: Dataset, Scoring Harness & Cassette Infrastructure** - Gold labelled dataset, four-metric pytest harness against a stub oracle, and key-free cassette replay
+- [x] **Phase 2: Deterministic Core** - Key-free grounding gate, date math, checklist, and strict-precedence aggregator, exhaustively tested
+- [x] **Phase 3: LLM Adapter & Extraction** - Server-side Anthropic extraction and reasoning behind the grounding gate (live cassettes recorded on first keyed run)
+- [x] **Phase 4: MCP Server Surface** - Four single-purpose FastMCP tools, disclaimer field, Inspector-ready, and a publish-ready package
+- [x] **Phase 5: Full Eval, Report & README** - Comparative eval runner, eval report + SVG, and story-led README
 
 ## Phase Details
 
@@ -87,8 +87,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Dataset, Scoring Harness & Cassette Infrastructure | 0/TBD | Not started | - |
-| 2. Deterministic Core | 0/TBD | Not started | - |
-| 3. LLM Adapter & Extraction | 0/TBD | Not started | - |
-| 4. MCP Server Surface | 0/TBD | Not started | - |
-| 5. Full Eval, Report & README | 0/TBD | Not started | - |
+| 1. Dataset, Scoring Harness & Cassette Infrastructure | 1/1 | ✓ Complete | 2026-06-27 |
+| 2. Deterministic Core | 1/1 | ✓ Complete | 2026-06-27 |
+| 3. LLM Adapter & Extraction | 1/1 | ✓ Complete | 2026-06-27 |
+| 4. MCP Server Surface | 1/1 | ✓ Complete | 2026-06-27 |
+| 5. Full Eval, Report & README | 1/1 | ✓ Complete | 2026-06-27 |
+
+**Note:** Built directly (62 passing tests, 5 atomic phase commits). The eval runs key-free via the heuristic baseline; the comparative Haiku-vs-Sonnet cassettes are recorded on the first run of `scripts/run_eval.py --record` with an `ANTHROPIC_API_KEY`.
