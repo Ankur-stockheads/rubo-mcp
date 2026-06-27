@@ -58,7 +58,7 @@ None yet.
 
 - ✓ RESOLVED [Phase 3]: `anthropic` 0.112.0 uses `messages.parse(..., output_format=Model) -> ParsedMessage`; the parsed object is read from `.parsed_output` (verified against the installed SDK). Client response-parsing is unit-tested via a mock.
 - ✓ RESOLVED [Phase 4]: FastMCP 3.4.2 verified against the installed package — `@mcp.tool` decorators return plain functions, `mcp.run()` defaults to stdio, tools expose `output_schema` + `annotations`. In-memory MCP client roundtrip passes.
-- ⏳ OPEN (runtime, not a build gap): the comparative Haiku-vs-Sonnet headline number requires a one-time `scripts/run_eval.py --record` with `ANTHROPIC_API_KEY` to record cassettes. The committed report is the key-free heuristic baseline, clearly labelled.
+- ✓ RESOLVED (2026-06-27): live cassettes recorded for both models. Headline (eval split, replayable key-free): **claude-sonnet-4-6 = 0.0% hallucination, 100% verdict accuracy, 100% abstention recall**; **claude-haiku-4-5 = 1.2% hallucination, 94% accuracy** (one overconfident miss on the ambiguous fixtures case). x-api-key redacted in cassettes; reproduced identically with no key.
 
 ## Deferred Items
 

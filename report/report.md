@@ -2,13 +2,13 @@
 
 > DECISION-SUPPORT ONLY — NOT LEGAL ADVICE. This tool applies a deliberately simplified, non-proprietary ruleset to synthetic data and can be wrong. A qualified solicitor must independently verify any real break-clause decision.
 
-**Run mode:** heuristic baseline (no ANTHROPIC_API_KEY, no cassettes)  
+**Run mode:** recorded cassettes (replay, no key)  
 **Cases (eval split):** 17  
-**Provenance:** deterministic heuristic — no API calls. Run `scripts/run_eval.py --record` with a key to measure claude-haiku-4-5 and claude-sonnet-4-6.
+**Provenance:** replayed from committed cassettes
 
 ## Headline — measured hallucination rate
 
-**heuristic-baseline: 13.8%**.
+**claude-haiku-4-5: 1.2%**, **claude-sonnet-4-6: 0.0%**.
 
 A hallucination is any *asserted* condition or clause that is **ungrounded** (no verbatim support), **misgrounded** (real citation, wrong conclusion), or **overconfident** (a definite answer on a genuinely-ambiguous condition). Honest abstentions (`uncertain` / NOT_FOUND) are never counted. Denominator = total assertions made. See [`docs/METHODOLOGY.md`](../docs/METHODOLOGY.md) for the pre-registered definitions.
 
@@ -16,45 +16,54 @@ A hallucination is any *asserted* condition or clause that is **ungrounded** (no
 
 ## All four metrics
 
-| Metric | heuristic-baseline |
-|---|---|
-| Hallucination rate ⬇ | **13.8%** |
-|   — ungrounded / misgrounded / overconfident | 0 / 9 / 2 |
-|   — case-level | 64.7% |
-| Extraction accuracy ⬆ | 100.0% |
-| Citation verbatim-rate ⬆ | 100.0% |
-| Citation support F1 ⬆ | 82.9% |
-| Overall verdict accuracy ⬆ | 35.3% |
-| Coverage (answered) ⬆ | 94.1% |
-| Accuracy on answered ⬆ | 37.5% |
-| Abstention precision ⬆ | 0.0% |
-| Abstention recall ⬆ | 0.0% |
+| Metric | claude-haiku-4-5 | claude-sonnet-4-6 |
+|---|---|---|
+| Hallucination rate ⬇ | **1.2%** | **0.0%** |
+|   — ungrounded / misgrounded / overconfident | 0 / 0 / 1 | 0 / 0 / 0 |
+|   — case-level | 5.9% | 0.0% |
+| Extraction accuracy ⬆ | 52.9% | 52.9% |
+| Citation verbatim-rate ⬆ | 100.0% | 100.0% |
+| Citation support F1 ⬆ | 82.4% | 84.2% |
+| Overall verdict accuracy ⬆ | 94.1% | 100.0% |
+| Coverage (answered) ⬆ | 88.2% | 82.4% |
+| Accuracy on answered ⬆ | 93.3% | 100.0% |
+| Abstention precision ⬆ | 100.0% | 100.0% |
+| Abstention recall ⬆ | 66.7% | 100.0% |
 
 ## Verdict confusion matrix
 
-**heuristic-baseline**
+**claude-haiku-4-5**
 
 | gold ↓ \ system → | VALID | INVALID | AMBIGUOUS |
 |---|---|---|---|
-| VALID | 0 | 5 | 0 |
-| INVALID | 2 | 6 | 1 |
-| AMBIGUOUS | 1 | 2 | 0 |
+| VALID | 5 | 0 | 0 |
+| INVALID | 0 | 9 | 0 |
+| AMBIGUOUS | 1 | 0 | 2 |
+
+**claude-sonnet-4-6**
+
+| gold ↓ \ system → | VALID | INVALID | AMBIGUOUS |
+|---|---|---|---|
+| VALID | 5 | 0 | 0 |
+| INVALID | 0 | 9 | 0 |
+| AMBIGUOUS | 0 | 0 | 3 |
 
 ## Where errors concentrate
 
-**heuristic-baseline** — hallucinations by condition:
-- Notice timing: 1
-- Notice validity: 2
-- Rent / no arrears: 4
-- Vacant possession: 4
+**claude-haiku-4-5** — hallucinations by condition:
+- Vacant possession: 1
+
+_claude-sonnet-4-6: no condition-level hallucinations._
 
 ## Caught-hallucination examples
 
-**heuristic-baseline**
+**claude-haiku-4-5**
 
-- **case-002 · Vacant possession** — system asserted `fail`, gold is `pass` → caught as **misgrounded**.
-- **case-004 · Vacant possession** — system asserted `fail`, gold is `uncertain` → caught as **overconfident**.
-- **case-006 · Rent / no arrears** — system asserted `fail`, gold is `pass` → caught as **misgrounded**.
+- **case-004 · Vacant possession** — system asserted `pass`, gold is `uncertain` → caught as **overconfident**.
+
+**claude-sonnet-4-6**
+
+_None — the system made no condition-level hallucinations._
 
 ## Limitations & reproducibility
 
