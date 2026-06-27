@@ -13,6 +13,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from break_clause_analyzer.core.aggregate import build_assessment
+from break_clause_analyzer.llm.client import LLMClient
 from break_clause_analyzer.models import (
     Assessment,
     BreakClause,
@@ -20,6 +21,7 @@ from break_clause_analyzer.models import (
     ConditionResult,
     Span,
 )
+from break_clause_analyzer.pipeline import assess_validity, extract_break_clause
 
 
 def span_of(source: str, quote: str) -> Span | None:
@@ -75,3 +77,19 @@ class OracleSystem:
                 )
             )
         return build_assessment(conditions)
+
+
+class LlmSystem:
+    """The real system under test: the propose->gate->dispose pipeline behind an
+    LLM client. Works with the Anthropic client (key/cassettes) or the heuristic
+    baseline. This is what the eval actually measures."""
+
+    def __init__(self, client: LLMClient):
+        self._client = client
+        self.name = client.model
+
+    def extract(self, source: str) -> BreakClause:
+        return extract_break_clause(source, self._client)
+
+    def assess(self, source: str) -> Assessment:
+        return assess_validity(source, self._client)
