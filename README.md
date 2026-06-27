@@ -1,5 +1,7 @@
 # UK Break Clause Analyzer (MCP)
 
+[![CI](https://github.com/Ankur-stockheads/rubo-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Ankur-stockheads/rubo-mcp/actions/workflows/ci.yml)
+
 **A self-evaluating MCP server that assesses whether a UK commercial-lease tenant
 break clause can actually be exercised — and publishes its own measured
 hallucination rate.**
@@ -109,6 +111,22 @@ No `ANTHROPIC_API_KEY` is required for any of the above — the eval falls back 
 heuristic baseline and is fully reproducible. Set the key (and `--record`) to
 measure the real Claude models.
 
+## Your Anthropic API key
+
+The key is only needed for **live** LLM extraction (the eval `--record` step and the
+server's real mode). Everything else runs without one.
+
+- **Never commit it.** `.env` is git-ignored and the cassettes redact the
+  `x-api-key` header.
+- **For local commands**, either export it or use a `.env` file:
+  ```bash
+  export ANTHROPIC_API_KEY=sk-ant-…           # option 1: shell
+  # or
+  cp .env.example .env && $EDITOR .env          # option 2: .env, then:
+  uv run --env-file .env python scripts/run_eval.py --record
+  ```
+- **For an MCP client**, put it in the server config's `env` block (below).
+
 ## Run the MCP server
 
 ```bash
@@ -116,18 +134,26 @@ measure the real Claude models.
 npx @modelcontextprotocol/inspector uv run break-clause-analyzer
 ```
 
-Or wire it into an MCP client (e.g. Claude Desktop) — `claude_desktop_config.json`:
+**Claude Desktop** — add to `claude_desktop_config.json` (use the absolute path to
+your clone so it runs from the project):
 
 ```json
 {
   "mcpServers": {
     "break-clause-analyzer": {
       "command": "uv",
-      "args": ["run", "break-clause-analyzer"],
+      "args": ["run", "--directory", "/absolute/path/to/rubo-mcp", "break-clause-analyzer"],
       "env": { "ANTHROPIC_API_KEY": "sk-ant-…" }
     }
   }
 }
+```
+
+**Claude Code** — one command:
+
+```bash
+claude mcp add break-clause-analyzer -e ANTHROPIC_API_KEY=sk-ant-… \
+  -- uv run --directory /absolute/path/to/rubo-mcp break-clause-analyzer
 ```
 
 Without a key the server still runs and responds — it uses the heuristic baseline

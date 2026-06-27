@@ -24,8 +24,8 @@ dependencies = [
 break-clause-analyzer = "break_clause_analyzer.server:main"
 
 [project.urls]
-Homepage = "https://github.com/ankursharma/uk-break-clause-analyzer-mcp"
-Repository = "https://github.com/ankursharma/uk-break-clause-analyzer-mcp"
+Homepage = "https://github.com/Ankur-stockheads/rubo-mcp"
+Repository = "https://github.com/Ankur-stockheads/rubo-mcp"
 
 [dependency-groups]
 dev = [
