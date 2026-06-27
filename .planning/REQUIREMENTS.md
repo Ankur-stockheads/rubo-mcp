@@ -94,46 +94,53 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
-| DATA-03 | — | Pending |
-| DATA-04 | — | Pending |
-| DATA-05 | — | Pending |
-| DATA-06 | — | Pending |
-| DATA-07 | — | Pending |
-| GRND-01 | — | Pending |
-| GRND-02 | — | Pending |
-| GRND-03 | — | Pending |
-| GRND-04 | — | Pending |
-| ASMT-01 | — | Pending |
-| ASMT-02 | — | Pending |
-| ASMT-03 | — | Pending |
-| ASMT-04 | — | Pending |
-| ASMT-05 | — | Pending |
-| ASMT-06 | — | Pending |
-| ASMT-07 | — | Pending |
-| EVAL-01 | — | Pending |
-| EVAL-02 | — | Pending |
-| EVAL-03 | — | Pending |
-| EVAL-04 | — | Pending |
-| EVAL-05 | — | Pending |
-| EVAL-06 | — | Pending |
-| EVAL-07 | — | Pending |
-| EVAL-08 | — | Pending |
-| EVAL-09 | — | Pending |
-| MCP-01 | — | Pending |
-| MCP-02 | — | Pending |
-| MCP-03 | — | Pending |
-| MCP-04 | — | Pending |
-| PKG-01 | — | Pending |
-| PKG-02 | — | Pending |
-| PKG-03 | — | Pending |
-| PKG-04 | — | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| DATA-03 | Phase 1 | Pending |
+| DATA-04 | Phase 1 | Pending |
+| DATA-05 | Phase 1 | Pending |
+| DATA-06 | Phase 1 | Pending |
+| DATA-07 | Phase 1 | Pending |
+| GRND-01 | Phase 2 | Pending |
+| GRND-02 | Phase 2 | Pending |
+| GRND-03 | Phase 2 | Pending |
+| GRND-04 | Phase 3 | Pending |
+| ASMT-01 | Phase 3 | Pending |
+| ASMT-02 | Phase 2 | Pending |
+| ASMT-03 | Phase 2 | Pending |
+| ASMT-04 | Phase 2 | Pending |
+| ASMT-05 | Phase 2 | Pending |
+| ASMT-06 | Phase 3 | Pending |
+| ASMT-07 | Phase 2 | Pending |
+| EVAL-01 | Phase 1 | Pending |
+| EVAL-02 | Phase 1 | Pending |
+| EVAL-03 | Phase 1 | Pending |
+| EVAL-04 | Phase 1 | Pending |
+| EVAL-05 | Phase 1 | Pending |
+| EVAL-06 | Phase 1 | Pending |
+| EVAL-07 | Phase 5 | Pending |
+| EVAL-08 | Phase 5 | Pending |
+| EVAL-09 | Phase 5 | Pending |
+| MCP-01 | Phase 4 | Pending |
+| MCP-02 | Phase 4 | Pending |
+| MCP-03 | Phase 4 | Pending |
+| MCP-04 | Phase 4 | Pending |
+| PKG-01 | Phase 4 | Pending |
+| PKG-02 | Phase 5 | Pending |
+| PKG-03 | Phase 5 | Pending |
+| PKG-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 32 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 32 ⚠️
+- Mapped to phases: 32 (100%)
+- Unmapped: 0
+
+**Per-phase distribution:**
+- Phase 1 (Dataset, Scoring Harness & Cassette Infrastructure): 13 — DATA-01..07, EVAL-01..06
+- Phase 2 (Deterministic Core): 8 — GRND-01, GRND-02, GRND-03, ASMT-02, ASMT-03, ASMT-04, ASMT-05, ASMT-07
+- Phase 3 (LLM Adapter & Extraction): 3 — GRND-04, ASMT-01, ASMT-06
+- Phase 4 (MCP Server Surface): 6 — MCP-01, MCP-02, MCP-03, MCP-04, PKG-01, PKG-04
+- Phase 5 (Full Eval, Report & README): 5 — EVAL-07, EVAL-08, EVAL-09, PKG-02, PKG-03
 
 ---
 
@@ -141,7 +148,10 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 - **Citation faithfulness scoring (EVAL-03):** v1 scores claim *support* against gold labels in the dataset (clean, no extra model dependency). An NLI/entailment judge (EVAL-10) is deferred to v2 — it adds a dependency and the gold-label approach is sufficient for a credible headline number.
 - **Hallucination definition (EVAL-04):** counts both *ungrounded* assertions (no verbatim span) and *misgrounded* ones (real span, unsupported conclusion), pre-registered before measurement so the number is honest and hard to game.
+- **`find_citation` placement (GRND-04 → Phase 3):** the grounding *gate* (GRND-01/02/03) is pure deterministic core (Phase 2), but the `find_citation(claim)` tool surfaces citation retrieval for an LLM-proposed claim, so it lands in Phase 3 alongside extraction/reasoning while reusing the Phase 2 gate.
+- **`assess_validity` split (ASMT-05 vs ASMT-06):** the deterministic strict-precedence aggregation (ASMT-05) is Phase 2; the orchestrated `assess_validity` that ties LLM extraction/reasoning to the core and surfaces the calibration field + human-verify gates (ASMT-06) requires the full pipeline and lands in Phase 3.
+- **Self-containment (PKG-04 → Phase 4):** treated as a packaging-integrity property gated at `uv build` time in Phase 4, rather than the final README phase.
 
 ---
 *Requirements defined: 2026-06-27*
-*Last updated: 2026-06-27 after initial definition*
+*Last updated: 2026-06-27 after roadmap traceability mapping*
