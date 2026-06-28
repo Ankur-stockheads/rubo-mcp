@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Ankur-stockheads/rubo-mcp",
+  "title": "UK Break Clause Analyzer",
+  "description": "A self-evaluating MCP server that assesses whether a UK commercial-lease tenant break clause can be exercised — grounding every claim to verbatim source text and publishing its own measured hallucination rate.",
+  "version": "0.1.1",
+  "repository": {
+    "url": "https://github.com/Ankur-stockheads/rubo-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "uk-break-clause-analyzer-mcp",
+      "version": "0.1.1",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "description": "Anthropic API key for live LLM extraction/reasoning. Without it the server runs in a heuristic-only fallback mode.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

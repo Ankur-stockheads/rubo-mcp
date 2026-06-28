@@ -1,6 +1,6 @@
 [project]
 name = "uk-break-clause-analyzer-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "A self-evaluating MCP server that assesses UK commercial-lease tenant break clauses, grounds every claim to verbatim source text, and publishes its own measured hallucination rate."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

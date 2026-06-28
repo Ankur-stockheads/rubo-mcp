@@ -1,0 +1,27 @@
+# Smithery configuration — https://smithery.ai/docs/config#smitheryyaml
+# Lets Smithery list and launch the server. Users run it locally via uvx (the
+# published PyPI package); no Docker or Smithery hosting required.
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - anthropicApiKey
+    properties:
+      anthropicApiKey:
+        type: string
+        description: >
+          Anthropic API key for live LLM extraction and reasoning
+          (console.anthropic.com). The server falls back to a heuristic-only
+          mode without it, but the grounded-LLM assessment needs a real key.
+  commandFunction: |-
+    (config) => ({
+      command: 'uvx',
+      args: ['uk-break-clause-analyzer-mcp'],
+      env: {
+        ANTHROPIC_API_KEY: config.anthropicApiKey
+      }
+    })
+  exampleConfig:
+    anthropicApiKey: sk-ant-xxxxxxxx

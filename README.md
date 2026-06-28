@@ -201,3 +201,6 @@ client data, and a production engine are explicitly out of scope.
 
 ---
 *Built as a reliability-engineering artifact. The eval is the point.*
+
+<!-- mcp-name: io.github.Ankur-stockheads/rubo-mcp -->
+
